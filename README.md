@@ -22,6 +22,10 @@ The run in [`evidence/`](evidence) caught both attacks, and the brute force was 
 
 From the first failed-login alert (16:26:12) to the firewall action (16:26:16) was about four seconds. A ticket-style write-up of the run is in [`docs/investigation.md`](docs/investigation.md).
 
+The same alerts in the Wazuh dashboard (Threat Hunting, filtered to `rule.id:(5763 OR 651 OR 5902 OR 100100)`): the brute force, the automatic block, the custom cron rule and the new account, with timestamps matching the manager's `alerts.json`.
+
+![Wazuh dashboard Events view showing rules 5763, 651, 100100 and 5902 for lab-agent-01](docs/screenshots/dashboard-events.png)
+
 ## Architecture
 
 ```
@@ -43,6 +47,8 @@ Docker with Compose v2.24+, Python 3.10+, Git, roughly 8 GB of free disk and 6 G
 
 The dashboard is at `https://localhost:8443` (self-signed certificate). Its login credentials are the upstream defaults documented in `upstream/single-node/README.md`. **Never expose this stack beyond your own machine**: it uses those default credentials.
 
+**Lab use only.** The attack scripts in `attacks/` are hard-wired to the `lab-agent` container this repo creates. Do not point them at any system you do not own or have written permission to test.
+
 ## Problems hit while building it
 
 The first run detected nothing about SSH, and the active response never fired. Tracing it back found three causes, now fixed in the repo:
@@ -57,7 +63,7 @@ Also changed from upstream: its compose file publishes every port on all network
 
 - **Linux only, containers only.** There are no Windows endpoints, Sysmon or Event IDs in this lab.
 - **Wazuh is not a full commercial EDR.** What is shown here is log-based detection, file integrity monitoring and scripted response. There is no process-tree or memory telemetry.
-- **The SIEM leg is only partly verified.** The manager wrote the alerts and Filebeat's TLS connection to the indexer tested OK, but I did not log in to the dashboard to confirm the alerts are searchable there. Check it yourself: open the dashboard and filter on agent `lab-agent-01`.
+- **One run, one agent.** The alerts were confirmed searchable in the dashboard (screenshot above) for this single scenario. Nothing here tests ingestion volume or multiple agents.
 - The attacks are scripted and simple (a 20-word list, one run). A tuned brute-force rule would need a threshold review against real traffic.
 - The 180-second block is a demonstration value. Production blocks belong at a network boundary.
 
@@ -71,7 +77,7 @@ attacks/          the attack scripts and wordlist
 config/           active response, local rules, central agent config
 compose/          overrides on top of upstream wazuh-docker
 evidence/         alerts and response output from the run above
-docs/             investigation.md
+docs/             investigation.md, screenshots/
 ```
 
 ## License
