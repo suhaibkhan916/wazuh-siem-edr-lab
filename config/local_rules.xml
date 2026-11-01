@@ -1,0 +1,26 @@
+<!-- Local rules for the lab. IDs 100000-120000 are reserved for local use in Wazuh. -->
+<group name="local,syscheck,lab,">
+
+  <!-- Built-in rule 554 fires for any file added to a monitored path. This narrows it to the
+       directory attackers use to schedule persistence, and raises the severity. -->
+  <rule id="100100" level="12">
+    <if_sid>554</if_sid>
+    <field name="file">^/etc/cron\.d/</field>
+    <description>Lab: file added under /etc/cron.d (possible cron persistence)</description>
+    <mitre>
+      <id>T1053.003</id>
+    </mitre>
+    <group>persistence,</group>
+  </rule>
+
+  <rule id="100101" level="12">
+    <if_sid>550</if_sid>
+    <field name="file">^/etc/cron\.d/</field>
+    <description>Lab: file modified under /etc/cron.d (possible cron persistence)</description>
+    <mitre>
+      <id>T1053.003</id>
+    </mitre>
+    <group>persistence,</group>
+  </rule>
+
+</group>

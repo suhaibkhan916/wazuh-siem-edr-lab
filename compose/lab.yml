@@ -1,0 +1,28 @@
+name: lab
+
+# Joins the Wazuh stack's network so the agent can reach wazuh.manager by name.
+services:
+  lab-agent:
+    build: ../agent
+    container_name: lab-agent
+    hostname: lab-agent-01
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ../attacks:/attacks:ro
+    networks:
+      - wazuh
+
+  attacker:
+    build: ../attacker
+    container_name: lab-attacker
+    hostname: attacker
+    volumes:
+      - ../attacks:/attacks:ro
+    networks:
+      - wazuh
+
+networks:
+  wazuh:
+    external: true
+    name: single-node_default

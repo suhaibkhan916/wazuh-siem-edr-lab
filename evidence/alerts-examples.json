@@ -1,0 +1,1025 @@
+[
+  {
+    "timestamp": "2026-11-01T16:25:20.444+0000",
+    "rule": {
+      "level": 3,
+      "description": "New wazuh agent connected.",
+      "id": "501",
+      "firedtimes": 1,
+      "mail": false,
+      "groups": [
+        "ossec"
+      ],
+      "pci_dss": [
+        "10.6.1"
+      ],
+      "gpg13": [
+        "10.1"
+      ],
+      "gdpr": [
+        "IV_35.7.d"
+      ],
+      "hipaa": [
+        "164.312.b"
+      ],
+      "nist_800_53": [
+        "AU.6"
+      ],
+      "tsc": [
+        "CC7.2",
+        "CC7.3"
+      ]
+    },
+    "agent": {
+      "id": "001",
+      "name": "lab-agent-01"
+    },
+    "data": {
+      "extra_data": "lab-agent-01->any"
+    },
+    "location": "wazuh-agent"
+  },
+  {
+    "timestamp": "2026-11-01T16:25:23.976+0000",
+    "rule": {
+      "level": 7,
+      "description": "CIS Ubuntu Linux 22.04 LTS Benchmark v2.0.0.: Ensure /tmp is a separate partition.",
+      "id": "19007",
+      "firedtimes": 13,
+      "mail": false,
+      "groups": [
+        "sca"
+      ],
+      "gdpr": [
+        "IV_35.7.d"
+      ],
+      "pci_dss": [
+        "2.2"
+      ],
+      "nist_800_53": [
+        "CM.1"
+      ],
+      "tsc": [
+        "CC7.1",
+        "CC7.2"
+      ],
+      "cis": [
+        "1.1.2.1.1"
+      ],
+      "cis_csc_v8": [
+        "4.8"
+      ],
+      "cis_csc_v7": [
+        "9.2"
+      ],
+      "iso_27001-2013": [
+        "A.13.1.3"
+      ],
+      "mitre_mitigations": [
+        "M1022"
+      ],
+      "mitre_tactics": [
+        "TA0005"
+      ],
+      "mitre_techniques": [
+        "T1499",
+        "T1499.001"
+      ],
+      "soc_2": [
+        "CC6.3",
+        "CC6.6"
+      ]
+    },
+    "agent": {
+      "id": "001",
+      "name": "lab-agent-01"
+    },
+    "data": {
+      "sca": {
+        "type": "check",
+        "scan_id": "1683953602",
+        "policy": "CIS Ubuntu Linux 22.04 LTS Benchmark v2.0.0.",
+        "check": {
+          "id": "28500",
+          "title": "Ensure /tmp is a separate partition.",
+          "description": "The /tmp directory is a world-writable directory used for temporary storage by all users and some applications. - IF - an entry for /tmp exists in /etc/fstab it will take precedence over entries in systemd default unit file. Note: In an environment where the main system is diskless and connected to iSCSI, entries in /etc/fstab may not take precedence. /tmp can be configured to use tmpfs. tmpfs puts everything into the kernel internal caches and grows and shrinks to accommodate the files it contains and is able to swap unneeded pages out to swap space. It has maximum size limits which can be adjusted on the fly via mount -o remount. Since tmpfs lives completely in the page cache and on swap, all tmpfs pages will be shown as \"Shmem\" in /proc/meminfo and \"Shared\" in free. Notice that these counters also include shared memory. The most reliable way to get the count is using df and du. tmpfs has three mount options for sizing: - size: The limit of allocated bytes for this tmpfs instance. The default is half of your physical RAM without swap. If you oversize your tmpfs instances the machine will deadlock since the OOM handler will not be able to free that memory. - nr_blocks: The same as size, but in blocks of PAGE_SIZE. - nr_inodes: The maximum number of inodes for this instance. The default is half of the number of your physical RAM pages, or (on a machine with highmem) the number of lowmem RAM pages, whichever is the lower. These parameters accept a suffix k, m or g and can be changed on remount. The size parameter also accepts a suffix % to limit this tmpfs instance to that percentage of your physical RAM. The default, when neither size nor nr_blocks is specified, is size=50%. Internal Only - General.",
+          "rationale": "Making /tmp its own file system allows an administrator to set additional mount options such as the noexec option on the mount, making /tmp useless for an attacker to install executable code. It would also prevent an attacker from establishing a hard link to a system setuid program and wait for it to be updated. Once the program was updated, the hard link would be broken, and the attacker would have his own copy of the program. If the program happened to have a security vulnerability, the attacker could continue to exploit the known flaw. This can be accomplished by either mounting tmpfs to /tmp, or creating a separate partition for /tmp.",
+          "remediation": "First ensure that systemd is correctly configured to ensure that /tmp will be mounted at boot time. # systemctl unmask tmp.mount For specific configuration requirements of the /tmp mount for your environment, modify /etc/fstab. Example of using tmpfs with specific mount options: tmpfs /tmp 0 tmpfs defaults,rw,nosuid,nodev,noexec,relatime,size=2G 0 Note: the size=2G is an example of setting a specific size for tmpfs. Example of using a volume or disk with specific mount options. The source location of the volume or disk will vary depending on your environment: <device> /tmp <fstype> defaults,nodev,nosuid,noexec 0 0.",
+          "compliance": {
+            "cis": "1.1.2.1.1",
+            "cis_csc_v8": "4.8",
+            "cis_csc_v7": "9.2",
+            "cmmc_v2": {
+              "0": "CM.L2-3.4.7,CM.L2-3.4.8,SC.L2-3.13.6"
+            },
+            "iso_27001-2013": "A.13.1.3",
+            "mitre_mitigations": "M1022",
+            "mitre_tactics": "TA0005",
+            "mitre_techniques": "T1499,T1499.001",
+            "pci_dss_v3": {
+              "2": {
+                "1": "1.1.6,1.2.1,2.2.2,2.2.5"
+              }
+            },
+            "pci_dss_v4": {
+              "0": "1.2.5,2.2.4,6.4.1"
+            },
+            "soc_2": "CC6.3,CC6.6"
+          },
+          "references": "https://www.freedesktop.org/wiki/Software/systemd/APIFileSystems/,https://www.freedesktop.org/software/systemd/man/systemd-fstab-generator.html,https://www.kernel.org/doc/Documentation/filesystems/tmpfs.txt",
+          "command": [
+            "findmnt -kn /tmp"
+          ],
+          "result": "failed"
+        }
+      }
+    },
+    "location": "sca"
+  },
+  {
+    "timestamp": "2026-11-01T16:25:24.201+0000",
+    "rule": {
+      "level": 3,
+      "description": "CIS Ubuntu Linux 22.04 LTS Benchmark v2.0.0.: Ensure nodev option set on /dev/shm partition.",
+      "id": "19008",
+      "firedtimes": 15,
+      "mail": false,
+      "groups": [
+        "sca"
+      ],
+      "gdpr": [
+        "IV_35.7.d"
+      ],
+      "pci_dss": [
+        "2.2"
+      ],
+      "nist_800_53": [
+        "CM.1"
+      ],
+      "tsc": [
+        "CC7.1",
+        "CC7.2"
+      ],
+      "cis": [
+        "1.1.2.2.2"
+      ],
+      "cis_csc_v8": [
+        "3.3"
+      ],
+      "cis_csc_v7": [
+        "14.6"
+      ],
+      "hipaa": [
+        "164.308(a)(3)(i)",
+        "164.308(a)(3)(ii)(A)",
+        "164.312(a)(1)"
+      ],
+      "iso_27001-2013": [
+        "A.9.1.1"
+      ],
+      "mitre_mitigations": [
+        "M1022"
+      ],
+      "mitre_tactics": [
+        "TA0005"
+      ],
+      "mitre_techniques": [
+        "T1200"
+      ],
+      "nist_sp_800-53": [
+        "AC-5",
+        "AC-6"
+      ],
+      "soc_2": [
+        "CC5.2",
+        "CC6.1"
+      ]
+    },
+    "agent": {
+      "id": "001",
+      "name": "lab-agent-01"
+    },
+    "data": {
+      "sca": {
+        "type": "check",
+        "scan_id": "1683953602",
+        "policy": "CIS Ubuntu Linux 22.04 LTS Benchmark v2.0.0.",
+        "check": {
+          "id": "28522",
+          "title": "Ensure nodev option set on /dev/shm partition.",
+          "description": "The nodev mount option specifies that the filesystem cannot contain special devices.",
+          "rationale": "Since the /dev/shm filesystem is not intended to support devices, set this option to ensure that users cannot attempt to create special devices in /dev/shm partitions.",
+          "remediation": "- IF - a separate partition exists for /dev/shm. Edit the /etc/fstab file and add nodev to the fourth field (mounting options) for the /dev/shm partition. See the fstab(5) manual page for more information. Example: tmpfs /dev/shm tmpfs defaults,rw,nosuid,nodev,noexec,relatime 0 0 Run the following command to remount /dev/shm with the configured options: # mount -o remount /dev/shm Note: It is recommended to use tmpfs as the device/filesystem type as /dev/shm is used as shared memory space by applications.",
+          "compliance": {
+            "cis": "1.1.2.2.2",
+            "cis_csc_v8": "3.3",
+            "cis_csc_v7": "14.6",
+            "cmmc_v2": {
+              "0": "AC.L1-3.1.1,AC.L1-3.1.2,AC.L2-3.1.3,AC.L2-3.1.5,MP.L2-3.8.2"
+            },
+            "hipaa": "164.308(a)(3)(i),164.308(a)(3)(ii)(A),164.312(a)(1)",
+            "iso_27001-2013": "A.9.1.1",
+            "mitre_mitigations": "M1022",
+            "mitre_tactics": "TA0005",
+            "mitre_techniques": "T1200",
+            "nist_sp_800-53": "AC-5,AC-6",
+            "pci_dss_v3": {
+              "2": {
+                "1": "7.1,7.1.1,7.1.2,7.1.3"
+              }
+            },
+            "pci_dss_v4": {
+              "0": "1.3.1,7.1"
+            },
+            "soc_2": "CC5.2,CC6.1"
+          },
+          "command": [
+            "findmnt -kn /dev/shm"
+          ],
+          "result": "passed"
+        }
+      }
+    },
+    "location": "sca"
+  },
+  {
+    "timestamp": "2026-11-01T16:25:24.243+0000",
+    "rule": {
+      "level": 3,
+      "description": "CIS Ubuntu Linux 22.04 LTS Benchmark v2.0.0.: Ensure bootloader password is set.",
+      "id": "19009",
+      "firedtimes": 29,
+      "mail": false,
+      "groups": [
+        "sca"
+      ],
+      "gdpr": [
+        "IV_35.7.d"
+      ],
+      "pci_dss": [
+        "2.2"
+      ],
+      "nist_800_53": [
+        "CM.1"
+      ],
+      "tsc": [
+        "CC7.1",
+        "CC7.2"
+      ],
+      "cis": [
+        "1.4.1"
+      ],
+      "cis_csc_v8": [
+        "3.3"
+      ],
+      "cis_csc_v7": [
+        "14.6"
+      ],
+      "hipaa": [
+        "164.308(a)(3)(i)",
+        "164.308(a)(3)(ii)(A)",
+        "164.312(a)(1)"
+      ],
+      "iso_27001-2013": [
+        "A.9.1.1"
+      ],
+      "mitre_mitigations": [
+        "M1046"
+      ],
+      "mitre_tactics": [
+        "TA0003"
+      ],
+      "mitre_techniques": [
+        "T1542"
+      ],
+      "nist_sp_800-53": [
+        "AC-5",
+        "AC-6"
+      ],
+      "soc_2": [
+        "CC5.2",
+        "CC6.1"
+      ]
+    },
+    "agent": {
+      "id": "001",
+      "name": "lab-agent-01"
+    },
+    "data": {
+      "sca": {
+        "type": "check",
+        "scan_id": "1683953602",
+        "policy": "CIS Ubuntu Linux 22.04 LTS Benchmark v2.0.0.",
+        "check": {
+          "id": "28527",
+          "title": "Ensure bootloader password is set.",
+          "description": "Setting the boot loader password will require that anyone rebooting the system must enter a password before being able to set command line boot parameters.",
+          "rationale": "Requiring a boot password upon execution of the boot loader will prevent an unauthorized user from entering boot parameters or changing the boot partition. This prevents users from weakening security (e.g. turning off AppArmor at boot time).",
+          "remediation": "Create an encrypted password with grub-mkpasswd-pbkdf2: # grub-mkpasswd-pbkdf2 --iteration-count=600000 --salt=64 Enter password: <password> Reenter password: <password> PBKDF2 hash of your password is <encrypted-password> Add the following into a custom /etc/grub.d configuration file: cat <<EOF exec tail -n +2 $0 set superusers=\"<username>\" password_pbkdf2 <username> <encrypted-password> EOF The superuser/user information and password should not be contained in the /etc/grub.d/00_header file as this file could be overwritten in a package update. If there is a requirement to be able to boot/reboot without entering the password, edit /etc/grub.d/10_linux and add --unrestricted to the line CLASS= Example: CLASS=\"--class gnu-linux --class gnu --class os --unrestricted\" Run the following command to update the grub2 configuration: # update-grub.",
+          "compliance": {
+            "cis": "1.4.1",
+            "cis_csc_v8": "3.3",
+            "cis_csc_v7": "14.6",
+            "cmmc_v2": {
+              "0": "AC.L1-3.1.1,AC.L1-3.1.2,AC.L2-3.1.3,AC.L2-3.1.5,MP.L2-3.8.2"
+            },
+            "hipaa": "164.308(a)(3)(i),164.308(a)(3)(ii)(A),164.312(a)(1)",
+            "iso_27001-2013": "A.9.1.1",
+            "mitre_mitigations": "M1046",
+            "mitre_tactics": "TA0003",
+            "mitre_techniques": "T1542",
+            "nist_sp_800-53": "AC-5,AC-6",
+            "pci_dss_v3": {
+              "2": {
+                "1": "7.1,7.1.1,7.1.2,7.1.3"
+              }
+            },
+            "pci_dss_v4": {
+              "0": "1.3.1,7.1"
+            },
+            "soc_2": "CC5.2,CC6.1"
+          },
+          "file": [
+            "/boot/grub/grub.cfg"
+          ],
+          "result": "not applicable",
+          "reason": "Could not open file '/boot/grub/grub.cfg'"
+        }
+      }
+    },
+    "location": "sca"
+  },
+  {
+    "timestamp": "2026-11-01T16:25:33.107+0000",
+    "rule": {
+      "level": 5,
+      "description": "SCA summary: CIS Ubuntu Linux 22.04 LTS Benchmark v2.0.0.: Score less than 80% (50)",
+      "id": "19003",
+      "firedtimes": 2,
+      "mail": false,
+      "groups": [
+        "sca"
+      ],
+      "gdpr": [
+        "IV_35.7.d"
+      ],
+      "pci_dss": [
+        "2.2"
+      ],
+      "nist_800_53": [
+        "CM.1"
+      ],
+      "tsc": [
+        "CC7.1",
+        "CC7.2"
+      ]
+    },
+    "agent": {
+      "id": "001",
+      "name": "lab-agent-01"
+    },
+    "data": {
+      "sca": {
+        "type": "summary",
+        "scan_id": "1683953602",
+        "policy": "CIS Ubuntu Linux 22.04 LTS Benchmark v2.0.0.",
+        "description": "This document provides prescriptive guidance for establishing a secure configuration posture for Ubuntu Linux 22.04 LTS based on CIS benchmark for Ubuntu Linux 22.04 LTS.",
+        "policy_id": "cis_ubuntu22-04",
+        "passed": "89",
+        "failed": "87",
+        "invalid": "31",
+        "total_checks": "207",
+        "score": "50",
+        "file": "cis_ubuntu22-04.yml"
+      }
+    },
+    "location": "sca"
+  },
+  {
+    "timestamp": "2026-11-01T16:26:12.023+0000",
+    "rule": {
+      "level": 5,
+      "description": "sshd: authentication failed.",
+      "id": "5760",
+      "mitre": {
+        "id": [
+          "T1110.001",
+          "T1021.004"
+        ],
+        "tactic": [
+          "Credential Access",
+          "Lateral Movement"
+        ],
+        "technique": [
+          "Password Guessing",
+          "SSH"
+        ]
+      },
+      "firedtimes": 1,
+      "mail": false,
+      "groups": [
+        "syslog",
+        "sshd",
+        "authentication_failed"
+      ],
+      "gdpr": [
+        "IV_35.7.d",
+        "IV_32.2"
+      ],
+      "gpg13": [
+        "7.1"
+      ],
+      "hipaa": [
+        "164.312.b"
+      ],
+      "nist_800_53": [
+        "AU.14",
+        "AC.7"
+      ],
+      "pci_dss": [
+        "10.2.4",
+        "10.2.5"
+      ],
+      "tsc": [
+        "CC6.1",
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ]
+    },
+    "agent": {
+      "id": "001",
+      "name": "lab-agent-01",
+      "ip": "172.19.0.5"
+    },
+    "data": {
+      "srcip": "172.19.0.6",
+      "srcport": "44304",
+      "dstuser": "labuser"
+    },
+    "location": "/var/log/auth.log"
+  },
+  {
+    "timestamp": "2026-11-01T16:26:16.027+0000",
+    "rule": {
+      "level": 10,
+      "description": "sshd: brute force trying to get access to the system. Authentication failed.",
+      "id": "5763",
+      "mitre": {
+        "id": [
+          "T1110"
+        ],
+        "tactic": [
+          "Credential Access"
+        ],
+        "technique": [
+          "Brute Force"
+        ]
+      },
+      "frequency": 8,
+      "firedtimes": 1,
+      "mail": false,
+      "groups": [
+        "syslog",
+        "sshd",
+        "authentication_failures"
+      ],
+      "gdpr": [
+        "IV_35.7.d",
+        "IV_32.2"
+      ],
+      "hipaa": [
+        "164.312.b"
+      ],
+      "nist_800_53": [
+        "SI.4",
+        "AU.14",
+        "AC.7"
+      ],
+      "pci_dss": [
+        "11.4",
+        "10.2.4",
+        "10.2.5"
+      ],
+      "tsc": [
+        "CC6.1",
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ]
+    },
+    "agent": {
+      "id": "001",
+      "name": "lab-agent-01",
+      "ip": "172.19.0.5"
+    },
+    "data": {
+      "srcip": "172.19.0.6",
+      "srcport": "44298",
+      "dstuser": "labuser"
+    },
+    "location": "/var/log/auth.log"
+  },
+  {
+    "timestamp": "2026-11-01T16:26:18.025+0000",
+    "rule": {
+      "level": 3,
+      "description": "Host Blocked by firewall-drop Active Response",
+      "id": "651",
+      "firedtimes": 1,
+      "mail": false,
+      "groups": [
+        "ossec",
+        "active_response"
+      ],
+      "pci_dss": [
+        "11.4"
+      ],
+      "gpg13": [
+        "4.13"
+      ],
+      "gdpr": [
+        "IV_35.7.d"
+      ],
+      "nist_800_53": [
+        "SI.4"
+      ],
+      "tsc": [
+        "CC6.1",
+        "CC6.8",
+        "CC7.2",
+        "CC7.3",
+        "CC7.4"
+      ]
+    },
+    "agent": {
+      "id": "001",
+      "name": "lab-agent-01",
+      "ip": "172.19.0.5"
+    },
+    "data": {
+      "srcip": "172.19.0.6",
+      "dstuser": "labuser",
+      "version": "1",
+      "origin": {
+        "name": "node01",
+        "module": "wazuh-execd"
+      },
+      "command": "add",
+      "parameters": {
+        "extra_args": [],
+        "alert": {
+          "timestamp": "2026-11-01T16:26:16.027+0000",
+          "rule": {
+            "level": "10",
+            "description": "sshd: brute force trying to get access to the system. Authentication failed.",
+            "id": "5763",
+            "mitre": {
+              "id": [
+                "T1110"
+              ],
+              "tactic": [
+                "Credential Access"
+              ],
+              "technique": [
+                "Brute Force"
+              ]
+            },
+            "frequency": "8",
+            "firedtimes": "1",
+            "mail": "false",
+            "groups": [
+              "syslog",
+              "sshd",
+              "authentication_failures"
+            ],
+            "gdpr": [
+              "IV_35.7.d",
+              "IV_32.2"
+            ],
+            "hipaa": [
+              "164.312.b"
+            ],
+            "nist_800_53": [
+              "SI.4",
+              "AU.14",
+              "AC.7"
+            ],
+            "pci_dss": [
+              "11.4",
+              "10.2.4",
+              "10.2.5"
+            ],
+            "tsc": [
+              "CC6.1",
+              "CC6.8",
+              "CC7.2",
+              "CC7.3"
+            ]
+          },
+          "agent": {
+            "id": "001",
+            "name": "lab-agent-01",
+            "ip": "172.19.0.5"
+          },
+          "manager": {
+            "name": "wazuh.manager"
+          },
+          "id": "1793550376.1539154",
+          "previous_output": "Nov  1 16:26:14 lab-agent-01 sshd[666]: Failed password for labuser from 172.19.0.6 port 44288 ssh2\nNov  1 16:26:14 lab-agent-01 sshd[669]: Failed password for labuser from 172.19.0.6 port 44304 ssh2\nNov  1 16:26:14 lab-agent-01 sshd[668]: Failed password for labuser from 172.19.0.6 port 44312 ssh2\nNov  1 16:26:11 lab-agent-01 sshd[667]: Failed password for labuser from 172.19.0.6 port 44298 ssh2\nNov  1 16:26:11 lab-agent-01 sshd[666]: Failed password for labuser from 172.19.0.6 port 44288 ssh2\nNov  1 16:26:11 lab-agent-01 sshd[668]: Failed password for labuser from 172.19.0.6 port 44312 ssh2\nNov  1 16:26:11 lab-agent-01 sshd[669]: Failed password for labuser from 172.19.0.6 port 44304 ssh2",
+          "full_log": "Nov  1 16:26:14 lab-agent-01 sshd[667]: Failed password for labuser from 172.19.0.6 port 44298 ssh2",
+          "predecoder": {
+            "program_name": "sshd",
+            "timestamp": "Nov  1 16:26:14",
+            "hostname": "lab-agent-01"
+          },
+          "decoder": {
+            "parent": "sshd",
+            "name": "sshd"
+          },
+          "data": {
+            "srcip": "172.19.0.6",
+            "srcport": "44298",
+            "dstuser": "labuser"
+          },
+          "location": "/var/log/auth.log"
+        },
+        "program": "active-response/bin/firewall-drop"
+      }
+    },
+    "location": "/var/ossec/logs/active-responses.log"
+  },
+  {
+    "timestamp": "2026-11-01T16:26:18.040+0000",
+    "rule": {
+      "level": 10,
+      "description": "syslog: User missed the password more than one time",
+      "id": "2502",
+      "mitre": {
+        "id": [
+          "T1110"
+        ],
+        "tactic": [
+          "Credential Access"
+        ],
+        "technique": [
+          "Brute Force"
+        ]
+      },
+      "firedtimes": 1,
+      "mail": false,
+      "groups": [
+        "syslog",
+        "access_control",
+        "authentication_failed"
+      ],
+      "pci_dss": [
+        "10.2.4",
+        "10.2.5"
+      ],
+      "gpg13": [
+        "7.8"
+      ],
+      "gdpr": [
+        "IV_35.7.d",
+        "IV_32.2"
+      ],
+      "hipaa": [
+        "164.312.b"
+      ],
+      "nist_800_53": [
+        "AU.14",
+        "AC.7"
+      ],
+      "tsc": [
+        "CC6.1",
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ]
+    },
+    "agent": {
+      "id": "001",
+      "name": "lab-agent-01",
+      "ip": "172.19.0.5"
+    },
+    "data": {
+      "srcip": "172.19.0.6",
+      "dstuser": "labuser"
+    },
+    "location": "/var/log/auth.log"
+  },
+  {
+    "timestamp": "2026-11-01T16:26:31.529+0000",
+    "rule": {
+      "level": 12,
+      "description": "Lab: file added under /etc/cron.d (possible cron persistence)",
+      "id": "100100",
+      "mitre": {
+        "id": [
+          "T1053.003"
+        ],
+        "tactic": [
+          "Execution",
+          "Persistence",
+          "Privilege Escalation"
+        ],
+        "technique": [
+          "Cron"
+        ]
+      },
+      "firedtimes": 1,
+      "mail": true,
+      "groups": [
+        "local",
+        "syscheck",
+        "lab",
+        "persistence"
+      ]
+    },
+    "agent": {
+      "id": "001",
+      "name": "lab-agent-01",
+      "ip": "172.19.0.5"
+    },
+    "syscheck": {
+      "path": "/etc/cron.d/lab-persist",
+      "mode": "realtime",
+      "size_after": "71",
+      "perm_after": "rw-r--r--",
+      "uid_after": "0",
+      "gid_after": "0",
+      "md5_after": "9af231425ba424900ae2fd7005420a47",
+      "sha1_after": "8477ef478a31ee29318d8bb3b5b01d4543562a55",
+      "sha256_after": "41fe2f1e10c7d63cb369e6c9ab88aed7daefcdee72bcefb010424bd6a0dc3657",
+      "uname_after": "root",
+      "gname_after": "root",
+      "mtime_after": "2026-11-01T16:26:31",
+      "inode_after": 1338870,
+      "event": "added"
+    },
+    "location": "syscheck"
+  },
+  {
+    "timestamp": "2026-11-01T16:26:31.542+0000",
+    "rule": {
+      "level": 5,
+      "description": "File added to the system.",
+      "id": "554",
+      "firedtimes": 1,
+      "mail": false,
+      "groups": [
+        "ossec",
+        "syscheck",
+        "syscheck_entry_added",
+        "syscheck_file"
+      ],
+      "pci_dss": [
+        "11.5"
+      ],
+      "gpg13": [
+        "4.11"
+      ],
+      "gdpr": [
+        "II_5.1.f"
+      ],
+      "hipaa": [
+        "164.312.c.1",
+        "164.312.c.2"
+      ],
+      "nist_800_53": [
+        "SI.7"
+      ],
+      "tsc": [
+        "PI1.4",
+        "PI1.5",
+        "CC6.1",
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ]
+    },
+    "agent": {
+      "id": "001",
+      "name": "lab-agent-01",
+      "ip": "172.19.0.5"
+    },
+    "syscheck": {
+      "path": "/lab/watched/config.ini",
+      "mode": "realtime",
+      "size_after": "9",
+      "perm_after": "rw-r--r--",
+      "uid_after": "0",
+      "gid_after": "0",
+      "md5_after": "88fa9f694690e11239096536ccf2702b",
+      "sha1_after": "c9e870f04c9a67f50f304ab2bb80cbefa3960adb",
+      "sha256_after": "25718360e05d3c2d0963d1381e9dd4dae5fca789244ee4b9f861adcc0cc96218",
+      "uname_after": "root",
+      "gname_after": "root",
+      "mtime_after": "2026-11-01T16:26:31",
+      "inode_after": 1338876,
+      "event": "added"
+    },
+    "location": "syscheck"
+  },
+  {
+    "timestamp": "2026-11-01T16:26:32.024+0000",
+    "rule": {
+      "level": 8,
+      "description": "New group added to the system.",
+      "id": "5901",
+      "firedtimes": 1,
+      "mail": false,
+      "groups": [
+        "syslog",
+        "adduser"
+      ],
+      "pci_dss": [
+        "10.2.7",
+        "10.2.5",
+        "8.1.2"
+      ],
+      "gpg13": [
+        "4.13"
+      ],
+      "gdpr": [
+        "IV_35.7.d",
+        "IV_32.2"
+      ],
+      "hipaa": [
+        "164.312.b",
+        "164.312.a.2.I",
+        "164.312.a.2.II"
+      ],
+      "nist_800_53": [
+        "AU.14",
+        "AC.7",
+        "AC.2",
+        "IA.4"
+      ],
+      "tsc": [
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ]
+    },
+    "agent": {
+      "id": "001",
+      "name": "lab-agent-01",
+      "ip": "172.19.0.5"
+    },
+    "location": "/var/log/auth.log"
+  },
+  {
+    "timestamp": "2026-11-01T16:26:32.024+0000",
+    "rule": {
+      "level": 8,
+      "description": "New user added to the system.",
+      "id": "5902",
+      "mitre": {
+        "id": [
+          "T1136"
+        ],
+        "tactic": [
+          "Persistence"
+        ],
+        "technique": [
+          "Create Account"
+        ]
+      },
+      "firedtimes": 1,
+      "mail": false,
+      "groups": [
+        "syslog",
+        "adduser"
+      ],
+      "pci_dss": [
+        "10.2.7",
+        "10.2.5",
+        "8.1.2"
+      ],
+      "gpg13": [
+        "4.13"
+      ],
+      "gdpr": [
+        "IV_35.7.d",
+        "IV_32.2"
+      ],
+      "hipaa": [
+        "164.312.b",
+        "164.312.a.2.I",
+        "164.312.a.2.II"
+      ],
+      "nist_800_53": [
+        "AU.14",
+        "AC.7",
+        "AC.2",
+        "IA.4"
+      ],
+      "tsc": [
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ]
+    },
+    "agent": {
+      "id": "001",
+      "name": "lab-agent-01",
+      "ip": "172.19.0.5"
+    },
+    "data": {
+      "dstuser": "svc_backup",
+      "uid": "1001",
+      "gid": "1001",
+      "home": "/home/svc_backup",
+      "shell": "/bin/bash,"
+    },
+    "location": "/var/log/auth.log"
+  },
+  {
+    "timestamp": "2026-11-01T16:26:33.751+0000",
+    "rule": {
+      "level": 7,
+      "description": "Integrity checksum changed.",
+      "id": "550",
+      "mitre": {
+        "id": [
+          "T1565.001"
+        ],
+        "tactic": [
+          "Impact"
+        ],
+        "technique": [
+          "Stored Data Manipulation"
+        ]
+      },
+      "firedtimes": 1,
+      "mail": false,
+      "groups": [
+        "ossec",
+        "syscheck",
+        "syscheck_entry_modified",
+        "syscheck_file"
+      ],
+      "pci_dss": [
+        "11.5"
+      ],
+      "gpg13": [
+        "4.11"
+      ],
+      "gdpr": [
+        "II_5.1.f"
+      ],
+      "hipaa": [
+        "164.312.c.1",
+        "164.312.c.2"
+      ],
+      "nist_800_53": [
+        "SI.7"
+      ],
+      "tsc": [
+        "PI1.4",
+        "PI1.5",
+        "CC6.1",
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ]
+    },
+    "agent": {
+      "id": "001",
+      "name": "lab-agent-01",
+      "ip": "172.19.0.5"
+    },
+    "syscheck": {
+      "path": "/lab/watched/config.ini",
+      "mode": "realtime",
+      "size_before": "9",
+      "size_after": "18",
+      "perm_after": "rw-r--r--",
+      "uid_after": "0",
+      "gid_after": "0",
+      "md5_before": "88fa9f694690e11239096536ccf2702b",
+      "md5_after": "288f1897fc1433c1abe4f4cc55d78147",
+      "sha1_before": "c9e870f04c9a67f50f304ab2bb80cbefa3960adb",
+      "sha1_after": "b655cefea4d993a5be9ba730b47275b66ea834b2",
+      "sha256_before": "25718360e05d3c2d0963d1381e9dd4dae5fca789244ee4b9f861adcc0cc96218",
+      "sha256_after": "dd4700794a0d6c48172b1aa102a52721ac278009444c05e3ea49dad3a593424d",
+      "uname_after": "root",
+      "gname_after": "root",
+      "mtime_before": "2026-11-01T16:26:31",
+      "mtime_after": "2026-11-01T16:26:33",
+      "inode_after": 1338876,
+      "diff": "1a2\n> tampered\n",
+      "changed_attributes": [
+        "size",
+        "mtime",
+        "md5",
+        "sha1",
+        "sha256"
+      ],
+      "event": "modified"
+    },
+    "location": "syscheck"
+  }
+]

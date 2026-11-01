@@ -1,0 +1,8 @@
+  <!-- Lab: block the source of an SSH brute-force attack at the agent for 3 minutes.
+       5763 = sshd brute force (valid user); 5712 = sshd brute force (any user). -->
+  <active-response>
+    <command>firewall-drop</command>
+    <location>local</location>
+    <rules_id>5763,5712</rules_id>
+    <timeout>180</timeout>
+  </active-response>
